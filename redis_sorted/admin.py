@@ -1,3 +1,4 @@
 from django.contrib import admin
+from redis_sorted.models import Movie
 
-# Register your models here.
+admin.site.register(Movie)
