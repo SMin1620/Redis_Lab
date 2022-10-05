@@ -1,3 +1,7 @@
+from django.core.cache import cache
+
+from redis_sorted.models import Movie
+
 
 class RedisRanker:
     """레디스를 이용한 랭커"""
@@ -37,6 +41,26 @@ class RedisRanker:
         return self.conn_redis.zrevrangebyscore(name=self.key, min="-inf", max="+inf", start=0, num=return_count)
 
 
-class RedisSet:
+def set_score():
+    movies = Movie.objec.tsall()
+    data = []
+    for movie in movies:
+        score = movie.score
+        name = movie.name
+        if score != 0:
+            data.append({'name': name, 'score': score})
+    return data
+
+
+def create_score():
+    data = set_score()
+    cache.set('movie_score', data, 600)
+    rank_score = cache.get('movie_score')
+    return rank_score
+
+
+def get_score():
+
+
 
 
