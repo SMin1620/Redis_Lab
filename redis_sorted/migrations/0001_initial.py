@@ -2,6 +2,8 @@
 
 from django.db import migrations, models
 
+from redis_sorted.utils.gen_movie_data import gen_movie
+
 
 class Migration(migrations.Migration):
 
@@ -23,4 +25,5 @@ class Migration(migrations.Migration):
                 'db_table': 'movie',
             },
         ),
+        migrations.RunPython(gen_movie),
     ]

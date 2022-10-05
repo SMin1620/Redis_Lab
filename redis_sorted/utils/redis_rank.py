@@ -34,4 +34,9 @@ class RedisRanker:
           :param return_count:int: 리턴할 개수
           :return tops:list: 상위에 위치한 멤버 리스트
         """
-        return conn_redis.zrevrangebyscore(name=self.key, min="-inf", max="+inf", start=0, num=return_count)
+        return self.conn_redis.zrevrangebyscore(name=self.key, min="-inf", max="+inf", start=0, num=return_count)
+
+
+class RedisSet:
+
+
