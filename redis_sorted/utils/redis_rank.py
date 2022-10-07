@@ -42,7 +42,7 @@ class RedisRanker:
 
 
 def set_score():
-    movies = Movie.objec.tsall()
+    movies = Movie.objects.all()
     data = []
     for movie in movies:
         score = movie.score
@@ -60,7 +60,9 @@ def create_score():
 
 
 def get_score():
-
-
+    score = cache.get('movie_score')
+    if score is None:
+        score = create_score()
+    return score
 
 

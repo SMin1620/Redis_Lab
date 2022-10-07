@@ -13,4 +13,5 @@ movie_list = MovieListViewSet.as_view({
 
 urlpatterns = [
     path('', movie_list),
+    path('rank/', MovieRankAPIView.as_view()),
 ]
