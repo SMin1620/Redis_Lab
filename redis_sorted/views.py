@@ -20,8 +20,10 @@ class MovieListViewSet(mixins.ListModelMixin,
 
 class MovieRankAPIView(views.APIView):
     def get(self, request, *args, **kwargs):
-        cache_data = get_score()
-        cache_data = movieRanker.getScore('Avengers')
-        return Response(cache_data, status=status.HTTP_200_OK)
+        pass
+
+        # cache_data = get_score()
+        # cache_data = movieRanker.getScore('Avengers')
+        # return Response(cache_data, status=status.HTTP_200_OK)
 
 
