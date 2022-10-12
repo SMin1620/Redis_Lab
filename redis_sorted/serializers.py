@@ -8,3 +8,12 @@ class MovieSerializer(serializers.ModelSerializer):
         model = Movie
         fields = '__all__'
 
+
+class MovieRankSerializer(serializers.ModelSerializer):
+    rank = serializers.Field()
+
+    class Meta:
+        model = Movie
+        fields = [
+            'rank'
+        ]

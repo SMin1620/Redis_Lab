@@ -1,3 +1,5 @@
+import redis
+
 from django.core.cache import cache
 
 from redis_sorted.models import Movie
@@ -41,28 +43,56 @@ class RedisRanker:
         return self.conn_redis.zrevrangebyscore(name=self.key, min="-inf", max="+inf", start=0, num=return_count)
 
 
-def set_score():
+def set_rank():
     movies = Movie.objects.all()
-    data = []
+    data = {}
+
     for movie in movies:
-        score = movie.score
         name = movie.name
+        score = float(movie.score)
         if score != 0:
-            data.append({'name': name, 'score': score})
+            data[name] = score
     return data
 
 
-def create_score():
-    data = set_score()
-    cache.set('movie_score', data, 600)
-    rank_score = cache.get('movie_score')
-    return rank_score
+def create_rank(redis_conn):
+    data = set_rank()
+    rank_data = redis_conn.zadd('movie', data)
+    return rank_data
 
 
-def get_score():
-    score = cache.get('movie_score')
-    if score is None:
-        score = create_score()
-    return score
+def get_rank(redis_conn):
+    rank = cache.get('movie')
+    if rank is None:
+        create_rank(redis_conn)
+    rank_range = redis_conn.zrevrangebyscore(name='movie', min="-inf", max="+inf")
+
+    return rank_range
+
+
+#
+# def set_score():
+#     movies = Movie.objects.all()
+#     data = []
+#     for movie in movies:
+#         score = movie.score
+#         name = movie.name
+#         if score != 0:
+#             data.append({'name': name, 'score': score})
+#     return data
+#
+#
+# def create_score():
+#     data = set_score()
+#     cache.set('movie_score', data, 600)
+#     rank_score = cache.get('movie_score')
+#     return rank_score
+#
+#
+# def get_score():
+#     score = cache.get('movie_score')
+#     if score is None:
+#         score = create_score()
+#     return score
 
 
