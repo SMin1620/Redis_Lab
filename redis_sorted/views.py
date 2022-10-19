@@ -21,6 +21,7 @@ class MovieRankAPIView(views.APIView):
     def get(self, request, *args, **kwargs):
         cache_data = get_rank(redis_conn)
 
+
         return Response(cache_data, status=status.HTTP_200_OK)
 
 
